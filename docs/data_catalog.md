@@ -1,11 +1,11 @@
 # DATA DICTIONARY FOR GOLD LAYER
 
 1. gold.dim_customers
-- Purpose: 
+- Purpose: Stores customer details enriched with demographic and geographic data
 - Columns:
 
 | Column name | Data Type | Description |
-|:---|:---|:---|
+|:---:|:---:|:---|
 | customer_key | INT | Surrogate key uniquely identifying each customer record in the table |
 |customer_id| INT | Unique numerical identifier assigned to each customer |
 |customer_number| CHAR(10) | Alphanumeric identifier representing the customer, used for tracking and referencing |
@@ -18,11 +18,11 @@
 |create_date| DATE | The date of customer record was created in the system, formatted as yyyy-mm-dd (2026-05-20)|
 
 2. gold.dim_products
-- Purpose:
+- Purpose: Provides information about the products and their attributes
 - Columns:
 
 | Column name | Data Type | Description |
-|:---|:---|:---|
+|:---:|:---:|:---|
 |product_key| INT| Surrogate key uniquely identifying each product record in the table |
 |product_id| INT | Unique numerical identifier assigned to each product |
 |product_number| NVARCHAR(10) | Alphanumeric identifier representing the product, used for tracking and referencing |
@@ -36,11 +36,11 @@
 |start_date| DATE |The date when products are available for sales|
 
 3. gold.fact_sales
-- Purpose:
+- Purpose: Stores transactional sales data for analytical purposes
 - Columns:
 
 | Column name | Data Type | Description |
-|:---|:---|:---|
+|:---:|:---:|:---|
 |order_number| VARCHAR(10) | A unique alphanumeric identifier for each sales order |
 |product_key| INT | Surrogate key link the order to the product dimension table |
 |customer_key| INT | Surrogate key link the order to the customer dimension table |
