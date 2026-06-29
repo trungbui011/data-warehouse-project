@@ -6,10 +6,10 @@
 - Data đầu vào bao gồm dữ liệu thuộc 3 nhóm customers (khách hàng), products (sản phẩm) và sales (bán hàng); được lấy từ 2 nguồn chính là CRM và ERP dưới định dạng csv.
 - Mục đích: giúp người dùng có cái nhìn tổng quan nhất, sử dụng để phân tích xu hướng của dữ liệu và làm báo cáo
 ## 2. Architecture
-- Data flow: Dữ liệu thô sẽ được lấy từ 2 nguồn ERP và CRM để đưa vào data warehouse. Dữ liệu trước khi được sử dụng cần phải đi qua 3 tầng xử lý khác nhau mới đủ điều kiện tiêu chuẩn sử dụng.
-+ Bronze Layer:
-+ Silver Layer:
-+ Gold Layer:
+- Data flow: Dữ liệu thô sẽ được lấy từ 2 nguồn ERP và CRM để đưa vào data warehouse. Dữ liệu trước khi được sử dụng cần phải đi qua 3 tầng xử lý khác nhau mới đủ điều kiện sử dụng để phân tích và làm báo cáo.
+  + Bronze Layer: Tầng đầu tiên này chỉ có vai trò thu thập đủ data tại địa chỉ được chỉ định, không can thiệp vào quá trình sửa đổi dữ liệu 
+  + Silver Layer: Tầng thứ hai sẽ tập trung vào việc làm sạch và chuẩn hóa dữ liệu, đảm bảo độ tin cậy trước khi được đưa đến tầng Gold
+  + Gold Layer: 
 ![data-warehouse-architecture](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Data-warehouse-architecture.png)
 - Công cụ sử dụng: SQL Server
 ## 3. Data Model
