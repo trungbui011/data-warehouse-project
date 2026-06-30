@@ -1,7 +1,8 @@
 # data-warehouse-project
 
 ## 1. Introduction
-&nbsp;&nbsp;&nbsp; Data warehouse đóng vai trò như một nhà kho chứa thông tin mà các công ty, doanh nghiệp cần. Việc xây dựng và duy trì tính ổn định của nhà kho này góp phần tối ưu thời gian và nhân lực rất lớn đối với một doanh nghiệp.
+&nbsp;&nbsp;&nbsp;Data warehouse (kho dữ liệu) là một hệ thống lưu trữ dữ liệu từ nhiều nguồn, nhiều môi trường khác nhau như: phần mềm bán hàng, kế toán, nhân sự,… giúp tăng cường hiệu suất truy vấn cho việc làm báo cáo và phân tích. Do đó, việc xây dựng và duy trì tính ổn định của nhà kho này đóng góp rất lớn vào việc tối ưu thời gian, chi phí và nguồn nhân lực đối với một doanh nghiệp.
+ 
 - Hệ thống Data Warehouse giúp chuẩn hóa và làm sạch dữ liệu đầu vào bán tự động, tuân thủ theo quy trình ETL (Extract - Transform - Load)
 - Data đầu vào bao gồm dữ liệu thuộc 3 nhóm customers (khách hàng), products (sản phẩm) và sales (bán hàng); được lấy từ 2 nguồn chính là CRM và ERP dưới định dạng csv.
 - Lợi ích:
@@ -19,6 +20,9 @@ Data Flow:
 - Công cụ sử dụng: SQL Server
 ## 3. Mô hình hóa dữ liệu (Data Modelling)
 - **Giới thiệu các bảng chính để phân tích:**
+
+- Conceptual Data Model (Mô hình Khái niệm)
+- Logical Data Model (Mô hình Logic)
 ## 4. Key Features
 - Cleansing như nào?
 - Transform như nào
