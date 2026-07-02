@@ -1,23 +1,27 @@
 # data-warehouse-project
 
 ## 1. Introduction
-&nbsp;&nbsp;&nbsp;Trong thời đại số hiện nay, khả năng chuyển đổi các dữ liệu thô thành những thông tin chi tiết có giá trị chính là lợi thế cạnh tranh cốt lõi. Tuy nhiên, nhiều doanh nghiệp hiện nay vẫn đang sử dụng **hệ cơ sở dữ liệu phân tán**, dữ liệu bị phân tán ở khắp nơi khiến cho việc thu thập và xử lý dữ liệu mất rất nhiều thời gian mà hiệu quả lại không cao, làm chậm tiến trình ra quyết định.
+
+&nbsp;&nbsp;&nbsp;Trong kỷ nguyên số, khả năng chuyển đổi dữ liệu thô thành những thông tin có giá trị chính là lợi thế cạnh tranh cốt lõi của mọi doanh nghiệp. Tuy nhiên, tình trạng dữ liệu phân mảnh giữa các phòng ban khiến việc tổng hợp dữ liệu trở nên thủ công, tốn kém thời gian và làm chậm trễ các quyết định chiến lược.
 
 ![data-flow (old systems)](https://github.com/trungbui011/data-warehouse-project/blob/main/images/data-flow(old%20systems).png)
 
-Project này được xây dựng để giải quyết những thách thức trên thông qua việc xây dựng hệ thống Data Warehouse. Bằng cách gom dữ liệu từ khắp nơi tập trung lại một chỗ, làm sạch và chuẩn hóa lại các nguồn dữ liệu rời rạc, hệ thống này sẽ loại bỏ những hạn chế của việc thu thập dữ liệu thủ công lặp đi lặp lại. Thay vào đó, nó tạo ra một **nguồn dữ liệu duy nhất đáng tin cậy**, sẵn sàng phục vụ cho các báo cáo BI chuyên sâu, dự báo xu hướng và hỗ trợ ra quyết định chiến lược.
+&nbsp;&nbsp;&nbsp;Dự án này được xây dựng nhằm giải quyết triệt để những thách thức trên thông qua việc thiết kế và triển khai một kho dữ liệu tập trung (data warehouse). Hệ thống đóng vai trò như một kho lưu trữ hợp nhất, thu thập dữ liệu từ đa dạng các nguồn nghiệp vụ như bán hàng, kế toán, nhân sự... ở mọi thời điểm giúp tối ưu hóa hiệu suất truy vấn cho các hoạt động phân tích và báo cáo.
 
-Mục tiêu của tôi là chứng minh rằng một quy trình dữ liệu (data pipeline) được thiết kế bài bản có thể chuyển đổi sự phức tạp trong vận hành thành sự linh hoạt trong kinh doanh, biến dữ liệu thô thành một tài sản chiến lược vô giá.
+![data-warehouse](https://github.com/trungbui011/data-warehouse-project/blob/main/images/data-flow.png)
+
+&nbsp;&nbsp;&nbsp;Bằng việc tự động hóa quá trình thu thập, làm sạch và chuẩn hóa các nguồn dữ liệu rời rạc, hệ thống này thiết lập một "Nguồn dữ liệu duy nhất đáng tin cậy" (Single Source of Truth). Từ đó, loại bỏ sự phụ thuộc vào các quy trình thủ công lặp lại, cung cấp một nền tảng vững chắc để thực hiện các báo cáo BI chuyên sâu, dự báo xu hướng và hỗ trợ ra quyết định chiến lược tối ưu thời gian và chi phí.
 
 
-
-Data warehouse (kho dữ liệu) là một hệ thống lưu trữ dữ liệu từ nhiều nguồn, nhiều môi trường khác nhau như: phần mềm bán hàng, kế toán, nhân sự,… giúp tăng cường hiệu suất truy vấn cho việc làm báo cáo và phân tích. Do đó, việc xây dựng và duy trì tính ổn định của nhà kho này đóng góp rất lớn vào việc tối ưu thời gian, chi phí và nguồn nhân lực đối với một doanh nghiệp.
- 
 - Hệ thống Data Warehouse giúp chuẩn hóa và làm sạch dữ liệu đầu vào bán tự động, tuân thủ theo quy trình ETL (Extract - Transform - Load)
 - Data đầu vào bao gồm dữ liệu thuộc 3 nhóm customers (khách hàng), products (sản phẩm) và sales (bán hàng); được lấy từ 2 nguồn chính là CRM và ERP dưới định dạng csv.
 - Lợi ích:
 - Mục đích: giúp người dùng có cái nhìn tổng quan nhất, sử dụng để phân tích xu hướng của dữ liệu và làm báo cáo
 ## 2. Architecture
+- Kiến trúc hệ thống
+- Giới thiệu các PP
+- Vì sao chọn Medallion
+
 **Data Architecture là gì? Bài này sử dụng PP nào? Giới thiệu... bài này sử dụng Medallion Architecture...**
 Data Flow:
 - Nguồn lấy dữ liệu (Resources): Dữ liệu thô sẽ được lấy từ 2 nguồn ERP và CRM để đưa vào data warehouse. Dữ liệu trước khi được sử dụng cần phải đi qua 3 tầng xử lý khác nhau mới đủ điều kiện sử dụng để phân tích và làm báo cáo.
