@@ -8,16 +8,13 @@
 
 &nbsp;&nbsp;&nbsp;Dự án này được xây dựng nhằm giải quyết triệt để những thách thức trên thông qua việc thiết kế và triển khai một kho dữ liệu tập trung (data warehouse). Hệ thống đóng vai trò như một kho lưu trữ hợp nhất, thu thập dữ liệu từ đa dạng các nguồn nghiệp vụ như bán hàng, kế toán, nhân sự... ở mọi thời điểm giúp tối ưu hóa hiệu suất truy vấn cho các hoạt động phân tích và báo cáo.
 
-![data-warehouse](https://github.com/trungbui011/data-warehouse-project/blob/main/images/data-flow.png)
+![data-warehouse](https://github.com/trungbui011/data-warehouse-project/blob/main/images/data-flow(new-system).png)
 
 &nbsp;&nbsp;&nbsp;Bằng việc tự động hóa quá trình thu thập, làm sạch và chuẩn hóa các nguồn dữ liệu rời rạc, hệ thống này thiết lập một "Nguồn dữ liệu duy nhất đáng tin cậy" (Single Source of Truth). Từ đó, loại bỏ sự phụ thuộc vào các quy trình thủ công lặp lại, cung cấp một nền tảng vững chắc để thực hiện các báo cáo BI chuyên sâu, dự báo xu hướng và hỗ trợ ra quyết định chiến lược tối ưu thời gian và chi phí.
 
-
-- Hệ thống Data Warehouse giúp chuẩn hóa và làm sạch dữ liệu đầu vào bán tự động, tuân thủ theo quy trình ETL (Extract - Transform - Load)
-- Data đầu vào bao gồm dữ liệu thuộc 3 nhóm customers (khách hàng), products (sản phẩm) và sales (bán hàng); được lấy từ 2 nguồn chính là CRM và ERP dưới định dạng csv.
-- Lợi ích:
-- Mục đích: giúp người dùng có cái nhìn tổng quan nhất, sử dụng để phân tích xu hướng của dữ liệu và làm báo cáo
 ## 2. Architecture
+Trước khi bắt tay vào xây dựng "nhà kho", ta cần một "bản thiết kế" thật tốt tùy theo yêu cầu của từng doanh nghiệp. Trong lĩnh vực phân tích dữ liệu, người ta gọi nó là Data Architecture (Kiến trúc dữ liệu). Kiến trúc dữ liệu giúp chúng ta thiết kế đường đi của thông tin dữ liệu, giúp doanh nghiệp tìm đúng thông tin cần thiết để nhanh chóng đưa ra quyết dịnh phù hợp trong nhiều trường hợp.
+
 - Kiến trúc hệ thống
 - Giới thiệu các PP
 - Vì sao chọn Medallion
