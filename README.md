@@ -1,5 +1,4 @@
-# data-warehouse-project
-
+# BUILDING DATA WAREHOUSE PROJECT
 ## 1. Introduction
 
 &nbsp;&nbsp;&nbsp;Trong kỷ nguyên số, khả năng chuyển đổi dữ liệu thô thành những thông tin có giá trị chính là lợi thế cạnh tranh cốt lõi của mọi doanh nghiệp. Tuy nhiên, tình trạng dữ liệu phân mảnh giữa các phòng ban khiến việc tổng hợp dữ liệu trở nên thủ công, tốn kém thời gian và làm chậm trễ các quyết định chiến lược.
@@ -13,11 +12,15 @@
 &nbsp;&nbsp;&nbsp;Bằng việc tự động hóa quá trình thu thập, làm sạch và chuẩn hóa các nguồn dữ liệu rời rạc, hệ thống này thiết lập một "Nguồn dữ liệu duy nhất đáng tin cậy" (Single Source of Truth). Từ đó, loại bỏ sự phụ thuộc vào các quy trình thủ công lặp lại, cung cấp một nền tảng vững chắc để thực hiện các báo cáo BI chuyên sâu, dự báo xu hướng và hỗ trợ ra quyết định chiến lược tối ưu thời gian và chi phí.
 
 ## 2. Architecture
-Trước khi bắt tay vào xây dựng "nhà kho", ta cần một "bản thiết kế" thật tốt tùy theo yêu cầu của từng doanh nghiệp. Trong lĩnh vực phân tích dữ liệu, người ta gọi nó là Data Architecture (Kiến trúc dữ liệu). Kiến trúc dữ liệu giúp chúng ta thiết kế đường đi của thông tin dữ liệu, giúp doanh nghiệp tìm đúng thông tin cần thiết để nhanh chóng đưa ra quyết dịnh phù hợp trong nhiều trường hợp.
+&nbsp;&nbsp;&nbsp;Trước khi bắt tay vào xây dựng "nhà kho", ta cần một "bản thiết kế" thật tốt tùy theo yêu cầu của từng doanh nghiệp. Trong lĩnh vực phân tích dữ liệu, người ta gọi nó là Data Architecture (Kiến trúc dữ liệu). Kiến trúc dữ liệu đóng vai trò là xương sống, định hướng các quy trình thu thập, lưu trữ, xử lý, phân phối.. của dòng dữ liệu, giúp doanh nghiệp tìm đúng thông tin cần thiết để nhanh chóng đưa ra quyết dịnh phù hợp trong nhiều trường hợp.
+&nbsp;&nbsp;&nbsp;Một số kiến trúc dữ liệu nổi tiếng hiện nay như: Lambda, Kappa, Data Mesh... Mỗi phương pháp đều có ưu, nhược điểm riêng. Trong project này, tôi lựa chọn phương pháp Medallion Architecture nhờ sự nhất quán và kiểm soát chất lượng dữ liệu dựa trên sự phân tầng để xử lý, phù hợp với bộ dữ liệu mà tôi lựa chọn cho Project này. 
+## 2.1 Medallion Architecture
+**Medallion Architecture** là phương pháp phân tầng xử lý dữ liệu thành ba tầng, tương ứng với 3 màu của huy chương là Bronze(Đồng), Silver(Bạc) và Gold (Vàng). Mỗi tầng sẽ có một nhiệm vụ khác nhau để dữ liệu đầu vào đạt đủ điều kiện để sử dụng.
 
-- Kiến trúc hệ thống
-- Giới thiệu các PP
-- Vì sao chọn Medallion
+![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Medallion-Architecture.png)
+
+- Bronze Layer: là tầng xử lý đầu tiên, có nhiệm vụ gom tất cả dữ liệu thô vào để lưu trữ, không có bất kỳ sự can thiệp, xử lý dữ liệu nào hết
+- Silver Layer: là tầng xử lý tiếp theo, có nhiệm vụ làm sạch, chuẩn hóa dữ liệu, tăng tính nhất quán của dữ liệu từ nhiều nguồn
 
 **Data Architecture là gì? Bài này sử dụng PP nào? Giới thiệu... bài này sử dụng Medallion Architecture...**
 Data Flow:
