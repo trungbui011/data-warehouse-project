@@ -1,7 +1,17 @@
 # data-warehouse-project
 
 ## 1. Introduction
-&nbsp;&nbsp;&nbsp;Data warehouse (kho dữ liệu) là một hệ thống lưu trữ dữ liệu từ nhiều nguồn, nhiều môi trường khác nhau như: phần mềm bán hàng, kế toán, nhân sự,… giúp tăng cường hiệu suất truy vấn cho việc làm báo cáo và phân tích. Do đó, việc xây dựng và duy trì tính ổn định của nhà kho này đóng góp rất lớn vào việc tối ưu thời gian, chi phí và nguồn nhân lực đối với một doanh nghiệp.
+&nbsp;&nbsp;&nbsp;Trong thời đại số hiện nay, khả năng chuyển đổi các dữ liệu thô thành những thông tin chi tiết có giá trị chính là lợi thế cạnh tranh cốt lõi. Tuy nhiên, nhiều doanh nghiệp hiện nay vẫn đang sử dụng **hệ cơ sở dữ liệu phân tán**, dữ liệu bị phân tán ở khắp nơi khiến cho việc thu thập và xử lý dữ liệu mất rất nhiều thời gian mà hiệu quả lại không cao, làm chậm tiến trình ra quyết định.
+
+![data-flow (old systems)](https://github.com/trungbui011/data-warehouse-project/blob/main/images/data-flow(old%20systems).png)
+
+Project này được xây dựng để giải quyết những thách thức trên thông qua việc xây dựng hệ thống Data Warehouse. Bằng cách gom dữ liệu từ khắp nơi tập trung lại một chỗ, làm sạch và chuẩn hóa lại các nguồn dữ liệu rời rạc, hệ thống này sẽ loại bỏ những hạn chế của việc thu thập dữ liệu thủ công lặp đi lặp lại. Thay vào đó, nó tạo ra một **nguồn dữ liệu duy nhất đáng tin cậy**, sẵn sàng phục vụ cho các báo cáo BI chuyên sâu, dự báo xu hướng và hỗ trợ ra quyết định chiến lược.
+
+Mục tiêu của tôi là chứng minh rằng một quy trình dữ liệu (data pipeline) được thiết kế bài bản có thể chuyển đổi sự phức tạp trong vận hành thành sự linh hoạt trong kinh doanh, biến dữ liệu thô thành một tài sản chiến lược vô giá.
+
+
+
+Data warehouse (kho dữ liệu) là một hệ thống lưu trữ dữ liệu từ nhiều nguồn, nhiều môi trường khác nhau như: phần mềm bán hàng, kế toán, nhân sự,… giúp tăng cường hiệu suất truy vấn cho việc làm báo cáo và phân tích. Do đó, việc xây dựng và duy trì tính ổn định của nhà kho này đóng góp rất lớn vào việc tối ưu thời gian, chi phí và nguồn nhân lực đối với một doanh nghiệp.
  
 - Hệ thống Data Warehouse giúp chuẩn hóa và làm sạch dữ liệu đầu vào bán tự động, tuân thủ theo quy trình ETL (Extract - Transform - Load)
 - Data đầu vào bao gồm dữ liệu thuộc 3 nhóm customers (khách hàng), products (sản phẩm) và sales (bán hàng); được lấy từ 2 nguồn chính là CRM và ERP dưới định dạng csv.
