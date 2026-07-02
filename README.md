@@ -11,31 +11,23 @@
 
 &nbsp;&nbsp;&nbsp;Bằng việc tự động hóa quá trình thu thập, làm sạch và chuẩn hóa các nguồn dữ liệu rời rạc, hệ thống này thiết lập một "Nguồn dữ liệu duy nhất đáng tin cậy" (Single Source of Truth). Từ đó, loại bỏ sự phụ thuộc vào các quy trình thủ công lặp lại, cung cấp một nền tảng vững chắc để thực hiện các báo cáo BI chuyên sâu, dự báo xu hướng và hỗ trợ ra quyết định chiến lược tối ưu thời gian và chi phí.
 
-## 2. Architecture
-&nbsp;&nbsp;&nbsp;Trước khi bắt tay vào xây dựng "nhà kho", ta cần một "bản thiết kế" thật tốt tùy theo yêu cầu của từng doanh nghiệp. Trong lĩnh vực phân tích dữ liệu, người ta gọi nó là Data Architecture (Kiến trúc dữ liệu). Kiến trúc dữ liệu đóng vai trò là xương sống, định hướng các quy trình thu thập, lưu trữ, xử lý, phân phối.. của dòng dữ liệu, giúp doanh nghiệp tìm đúng thông tin cần thiết để nhanh chóng đưa ra quyết dịnh phù hợp trong nhiều trường hợp.
+## 2. Kiến trúc dữ liệu (Data Architecture)
+&nbsp;&nbsp;&nbsp;Trước khi bắt tay vào xây dựng "nhà kho", ta cần một "bản thiết kế" thật tốt tùy theo yêu cầu của từng doanh nghiệp. Trong lĩnh vực phân tích dữ liệu, người ta gọi nó là Data Architecture (kiến trúc dữ liệu). Kiến trúc dữ liệu đóng vai trò là xương sống, định hướng các quy trình thu thập, lưu trữ, xử lý, phân phối.. của dòng dữ liệu, giúp doanh nghiệp tìm đúng thông tin cần thiết để nhanh chóng đưa ra quyết dịnh phù hợp trong nhiều trường hợp.
 &nbsp;&nbsp;&nbsp;Một số kiến trúc dữ liệu nổi tiếng hiện nay như: Lambda, Kappa, Data Mesh... Mỗi phương pháp đều có ưu, nhược điểm riêng. Trong project này, tôi lựa chọn phương pháp Medallion Architecture nhờ sự nhất quán và kiểm soát chất lượng dữ liệu dựa trên sự phân tầng để xử lý, phù hợp với bộ dữ liệu mà tôi lựa chọn cho Project này. 
 ### 2.1 Medallion Architecture
-**Medallion Architecture** là phương pháp phân tầng xử lý dữ liệu thành ba tầng, tương ứng với 3 màu đặc trưng của huy chương là Bronze(Đồng), Silver(Bạc) và Gold (Vàng). Mỗi tầng sẽ có một nhiệm vụ khác nhau để xử lý dữ liệu đầu vào trước khi được mang đi sử dụng.
+**Medallion Architecture** là phương pháp phân tầng để xử lý dữ liệu, ba tầng này là Bronze(Đồng), Silver(Bạc) và Gold (Vàng). Mỗi tầng sẽ có một nhiệm vụ khác nhau để xử lý dữ liệu đầu vào trước khi được mang đi sử dụng.
 - Bronze Layer: Lưu trữ dữ liệu thô gốc từ các nguồn để đảm bảo tính an toàn và dễ dàng truy vết.
 - Silver Layer: Làm sạch và chuẩn hóa dữ liệu, đảm bảo tính nhất quán dữ liệu giữa các nguồn.
 - Gold Layer: tái cấu trúc dữ liệu từ các bảng thô thành Data Schema chuyên biệt cho từng đối tượng (objects), tạo ra dữ liệu sạch và đáng tin cậy.
+
 ![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Medallion-Architecture.png)
 
-
-Data Flow:
-- Nguồn lấy dữ liệu (Resources): Dữ liệu thô sẽ được lấy từ 2 nguồn ERP và CRM để đưa vào data warehouse. Dữ liệu trước khi được sử dụng cần phải đi qua 3 tầng xử lý khác nhau mới đủ điều kiện sử dụng để phân tích và làm báo cáo.
-- Datawarehouse: **gồm 3 tầng,...**
-  + Bronze Layer: Tầng đầu tiên này chỉ có vai trò thu thập đủ data tại địa chỉ được chỉ định, không can thiệp vào quá trình sửa đổi dữ liệu.
-  + Silver Layer: Tầng thứ hai sẽ tập trung vào việc làm sạch và chuẩn hóa dữ liệu, bao gồm xử lý những dữ liệu rỗng và sai định dạng, đảm bảo độ tin cậy trước khi được đưa đến tầng Gold
-  + Gold Layer: Đảm bảo dữ liệu xử lý để đáp ứng theo nhu cầu phân tích và sử dụng của doanh nghiệp, kết nối các bảng dữ liệu thành các nhóm Objects (đối tượng), dữ liệu được chia thành 2 nhóm Fact (dữ liệu số, phục vụ cho quá trình tính toán) và Dim (dữ liệu định tính, mô tả chi tiết cho các dữ liệu số).
-- Analyze: 
-![data-warehouse-architecture](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Data-warehouse-architecture.png)
-- Công cụ sử dụng: SQL Server
 ## 3. Mô hình hóa dữ liệu (Data Modelling)
-- **Giới thiệu các bảng chính để phân tích:**
+Quá trình mô hình hóa dữ liệu sẽ tái cấu trúc những dữ liệu đã được xử lý ở tầng Silver thành các đối tượng (Objects) như: customers, products, sales... Các đối tượng này sẽ được gom thành từng bảng và được chia thành 2 thuộc tính: Bảng Fact(chứa số liệu, phục vụ cho việc tính toán) và Bảng Dim (Dimension - chứa những thông tin mô tả). Sau đó các bảng/đối tượng này sẽ được kết nối với nhau dựa vào mối quan hệ giữa chúng. Hệ thống những liên kết giữa các Objects này sẽ được gọi là Schema (lược đồ) 
+Có hai loại lược đồ dữ liệu phổ biến là: Star Schema (lược đồ hình sao) và Snowflake Schema (lược đồ hình bông tuyết).
+- Star Schema
+- Snowflake Schema
 
-- Conceptual Data Model (Mô hình Khái niệm)
-- Logical Data Model (Mô hình Logic)
 ## 4. Key Features
 - Cleansing như nào?
 - Transform như nào
