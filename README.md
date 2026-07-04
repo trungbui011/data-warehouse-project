@@ -45,12 +45,15 @@ Dữ liệu thô ban đầu thuộc 2 nguồn giả định CRM và ERP được
 - Bước 2: Tạo Stored Procedure [12](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/2.%20silver_layer/proc_load_silver.sql)
 
 #### 4.2.3 Tầng Gold
-- Tạo Objects: 
 
-- Cleansing như nào?
-- Transform như nào
-- Handle lỗi như nào?
+- Tạo mối liên hệ giữa các bảng với nhau thông qua các khóa chính PK (Primary key):
+![objects relationship](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Objects%20relationship.png)
 
+- Dưới đây là scripts SQL tạo 3 objects trên cho tầng Gold: 
+[123123](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/3.%20gold_layer/ddl_gold.sql)
+
+- Data Mart nè:
+![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/star%20schema.png)
 
 ## 5. Usage
 - Cách vận hành hệ thống, thứ tự chạy những scripts nào? Lưu ý gì?
