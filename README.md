@@ -32,10 +32,26 @@
 
 ![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Schemas.png)
 
-## 4. Key Features
+## 4. Triển khai dự án (Project Implementation)
+### 4.1 Chuẩn bị Data
+Dữ liệu thô ban đầu thuộc 2 nguồn giả định CRM và ERP được lưu trong folder [datasets](https://github.com/trungbui011/data-warehouse-project/tree/main/datasets) dưới dạng các file csv.
+### 4.2 Thiết lập cấu trúc bảng
+#### 4.2.1 Tầng Bronze
+- Bước 1: Xây dựng cấu trúc bảng, trước tiên cần tạo Database, tạo bảng và kiểu dữ liệu của từng cột cho phù hợp [nè](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/ddl_bronze.sql)
+- Bước 2: Tạo Stored Procedure trong SQL để lưu lại script, để quá trình chạy code và xử lý diễn ra nhanh hơn [đây](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/proc_load_bronze.sql)
+
+#### 4.2.2 Tầng Silver
+- Bước 1: Xây dựng cấu trúc bảng [11](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/2.%20silver_layer/ddl_silver.sql)
+- Bước 2: Tạo Stored Procedure [12](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/2.%20silver_layer/proc_load_silver.sql)
+
+#### 4.2.3 Tầng Gold
+- Tạo Objects: 
+
 - Cleansing như nào?
 - Transform như nào
 - Handle lỗi như nào?
+
+
 ## 5. Usage
 - Cách vận hành hệ thống, thứ tự chạy những scripts nào? Lưu ý gì?
 ## 6. Data Dictionary
