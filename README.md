@@ -13,6 +13,7 @@
 
 ## 2. Kiến trúc dữ liệu (Data Architecture)
 &nbsp;&nbsp;&nbsp;Trước khi bắt tay vào xây dựng "nhà kho", ta cần một "bản thiết kế" thật tốt tùy theo yêu cầu của từng doanh nghiệp. Trong lĩnh vực phân tích dữ liệu, người ta gọi nó là Data Architecture (kiến trúc dữ liệu). Kiến trúc dữ liệu đóng vai trò là xương sống, định hướng các quy trình thu thập, lưu trữ, xử lý, phân phối.. của dòng dữ liệu, giúp doanh nghiệp tìm đúng thông tin cần thiết để nhanh chóng đưa ra quyết dịnh phù hợp trong nhiều trường hợp.
+
 &nbsp;&nbsp;&nbsp;Một số kiến trúc dữ liệu nổi tiếng hiện nay như: Lambda, Kappa, Data Mesh... Mỗi phương pháp đều có ưu, nhược điểm riêng. Trong project này, tôi lựa chọn phương pháp Medallion Architecture nhờ sự nhất quán và kiểm soát chất lượng dữ liệu dựa trên sự phân tầng để xử lý, phù hợp với bộ dữ liệu mà tôi lựa chọn cho Project này. 
 ### 2.1 Medallion Architecture
 **Medallion Architecture** là phương pháp phân tầng để xử lý dữ liệu, ba tầng này là Bronze(Đồng), Silver(Bạc) và Gold (Vàng). Mỗi tầng sẽ có một nhiệm vụ khác nhau để xử lý dữ liệu đầu vào trước khi được mang đi sử dụng.
@@ -23,10 +24,13 @@
 ![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Medallion-Architecture.png)
 
 ## 3. Mô hình hóa dữ liệu (Data Modelling)
-Quá trình mô hình hóa dữ liệu sẽ tái cấu trúc những dữ liệu đã được xử lý ở tầng Silver thành các đối tượng (Objects) như: customers, products, sales... Các đối tượng này sẽ được gom thành từng bảng và được chia thành 2 thuộc tính: Bảng Fact(chứa số liệu, phục vụ cho việc tính toán) và Bảng Dim (Dimension - chứa những thông tin mô tả). Sau đó các bảng/đối tượng này sẽ được kết nối với nhau dựa vào mối quan hệ giữa chúng. Hệ thống những liên kết giữa các Objects này sẽ được gọi là Schema (lược đồ) 
-Có hai loại lược đồ dữ liệu phổ biến là: Star Schema (lược đồ hình sao) và Snowflake Schema (lược đồ hình bông tuyết).
-- Star Schema
-- Snowflake Schema
+&nbsp;&nbsp;&nbsp;Quá trình mô hình hóa dữ liệu được thực hiện ở tầng Gold, nó sẽ tái cấu trúc những dữ liệu đã được xử lý ở tầng Silver thành các bảng mang thông tin, thuộc tính của từng đối tượng (Objects) như: customers, products, sales... Các đối tượng này được phân loại thành 2 dạng là: Bảng Fact (chứa số liệu, phục vụ cho việc tính toán) và Bảng Dim (Dimension - chứa những thông tin mô tả). Các đối tượng sẽ được kết nối với nhau để tạo thành mô hình hóa dữ liệu dựa vào mối quan hệ giữa chúng. Lược đồ biểu diễn mối quan hệ giữa các đối tượng được gọi là Schema (lược đồ).
+
+&nbsp;&nbsp;&nbsp;Có hai loại lược đồ dữ liệu phổ biến là: Star Schema (lược đồ hình sao) và Snowflake Schema (lược đồ hình bông tuyết).
+- Star Schema: là một mô hình thiết kế cơ sở dữ liệu phổ biến trong Data Warehouse, bao gồm một bảng Fact ở trung tâm và được bao quanh bởi các bảng Dimension vệ tinh chứa thông tin mô tả chi tiết.
+- Snowflake Schema: là mô hình nâng cấp của Star Schema, lúc này các bảng Dimension được chuẩn hóa thành nhiều cấp độ để giảm thiểu dư thừa dữ liệu. Mô hình này phù hợp khi cần đảm bảo tính toàn vẹn dữ liệu cao và cấu trúc logic phức tạp.
+
+![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Schemas.png)
 
 ## 4. Key Features
 - Cleansing như nào?
