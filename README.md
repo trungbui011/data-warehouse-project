@@ -52,9 +52,9 @@ Chỉ cần 2 bước là đã xây dựng xong cấu trúc của tầng Bronze.
 + Data Cleansing: loại bỏ giá trị trùng lặp, xử lý các giá trị rỗng (NULL)
 + Thống nhất định dạng: (ngày tháng, tiền tệ...) và biến thể của dữ liệu (vd: 'US', 'USA' và 'United States' thống nhất chuyển về thành United States)
 + Đồng bộ hóa các khóa: khắc phục vấn đề khi dữ liệu bị phân mảnh, ví dụ cùng 1 id khách hàng '11000':
-  + Ở bảng BRONZE.erp_cust_az12 giá trị trong cột cid là 'NASAW00011000',
-  + Ở bảng BRONZE.crm_cust_info giá trị trong cột cst_key là 'AW00011000',
-  + Ở bảng BRONZE.erp_loc_a101 giá trị trong cột cid là 'AW-00011000'.
+    + Ở bảng BRONZE.erp_cust_az12 giá trị trong cột cid là 'NASAW00011000',
+    + Ở bảng BRONZE.crm_cust_info giá trị trong cột cst_key là 'AW00011000',
+    + Ở bảng BRONZE.erp_loc_a101 giá trị trong cột cid là 'AW-00011000'.
 
 Do đó cần phải thống nhất một định dạng để đảm bảo tính toàn vẹn và chính xác khi thực hiện JOIN các bảng ở tầng Gold. Để phục vụ công tác kiểm soát dữ liệu, mỗi bảng được bổ sung cột **dwh_create_date** nhằm theo dõi thời điểm dữ liệu được nạp vào hệ thống. Thao khảo script tại đây: [proc_load_silver.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/2.%20silver_layer/proc_load_silver.sql). 
   #### 4.2.3 Tầng Gold
@@ -62,12 +62,12 @@ Do đó cần phải thống nhất một định dạng để đảm bảo tín
 - Tạo mối liên hệ giữa các bảng với nhau thông qua các khóa chính PK (Primary key):
 ![objects relationship](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Objects%20relationship.png)
 
-- Dưới đây là scripts SQL tạo 3 objects trên cho tầng Gold: [ddl_gold.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/3.%20gold_layer/ddl_gold.sql)
+Data flow của project này được trình bày chi tiết như hình dưới:
+![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/project-data-flow.png)
+
+- Dưới đây là scripts SQL tạo 3 objects cho tầng Gold dựa theo data flow: [ddl_gold.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/3.%20gold_layer/ddl_gold.sql)
 
 - Sử dụng Star schema để mô hình hóa 3 objects này:
 ![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/star%20schema.png)
-
-## 5. Usage
-- Cách vận hành hệ thống, thứ tự chạy những scripts nào? Lưu ý gì?
-## 6. Data Dictionary
-- Link tới file data_catalog, thuộc tính, mô tả giá trị của từng cột
+## 5. Data Dictionary
+- [Catalog](https://github.com/trungbui011/data-warehouse-project/blob/main/docs/data_catalog.md)
