@@ -36,10 +36,11 @@
 ### 4.1 Chuẩn bị Data
 Dữ liệu thô ban đầu thuộc 2 nguồn giả định CRM và ERP được lưu trong folder [datasets](https://github.com/trungbui011/data-warehouse-project/tree/main/datasets) dưới dạng các file csv.
 ### 4.2 Thiết lập cấu trúc bảng
+Trước khi thiết lập cấu trúc bảng của từng layer, ta cần tạo database trên RDBMS (SQL Server hoặc Oracle). Việc này giúp chuẩn hóa hạ tầng, đảm bảo tính nhất quán và hiệu năng tối ưu cho các tầng dữ liệu phía sau.
 #### 4.2.1 Tầng Bronze
-- Bước 1: Xây dựng cấu trúc bảng, trước tiên cần tạo Database, tạo bảng và kiểu dữ liệu của từng cột cho phù hợp [nè](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/ddl_bronze.sql)
-- Bước 2: Tạo Stored Procedure trong SQL để lưu lại script, để quá trình chạy code và xử lý diễn ra nhanh hơn [đây](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/proc_load_bronze.sql)
-
+- Bước 1: Khởi tạo DDL (Data Definition Language): Xây dựng cấu trúc bảng và định nghĩa kiểu dữ liệu phù hợp với dữ liệu thô từ nguồn. [script](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/ddl_bronze.sql)
+- Bước 2: Tự động hóa với Stored Procedures: Thiết lập các thủ tục lưu sẵn (Stored Procedures) để tối ưu hóa hiệu suất nạp dữ liệu và chuẩn hóa quy trình xử lý. [script](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/proc_load_bronze.sql)
+Chỉ cần 2 bước là đã xây dựng xong cấu trúc của tầng Bronze. Dữ liệu thô đưa vào tầng Bronze được giữ nguyên toàn bộ cấu trúc và định dạng. Mục đích là để truy vết và xác định lỗi nếu ta gặp lỗi ở tầng Silver hay Gold.
 #### 4.2.2 Tầng Silver
 - Bước 1: Xây dựng cấu trúc bảng [11](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/2.%20silver_layer/ddl_silver.sql)
 - Bước 2: Tạo Stored Procedure [12](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/2.%20silver_layer/proc_load_silver.sql)
