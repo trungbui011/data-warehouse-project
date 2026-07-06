@@ -1,5 +1,31 @@
 # BUILDING DATA WAREHOUSE PROJECT
-## 1. Introduction
+
+## MỤC LỤC
+&nbsp;&nbsp;&nbsp;[1. Giới thiệu chung](#1-giới-thiệu-chung)
+
+&nbsp;&nbsp;&nbsp;[2. Kiến trúc dữ liệu (Data Architecture)](#2-kiến-trúc-dữ-liệu-data-architecture)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[2.1 Medallion Architecture](#21-medallion-architecture)
+
+&nbsp;&nbsp;&nbsp;[3. Mô hình hóa dữ liệu (Data Modelling)](#3-mô-hình-hóa-dữ-liệu-data-modelling)
+
+&nbsp;&nbsp;&nbsp;[4. Triển khai dự án (Project Implementation)](#4-triển-khai-dự-án-project-implementation)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[4.1 Chuẩn bị Data](#41-chuẩn-bị-data)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[4.2 Thiết lập cấu trúc bảng](#42-thiết-lập-cấu-trúc-bảng)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[4.2.1 Tầng Bronze](#421-tầng-bronze)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[4.2.2 Tầng Silver](#422-tầng-silver)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[4.2.3 Tầng Gold](#423-tầng-gold)
+
+&nbsp;&nbsp;&nbsp;[5. Data Dictionary](#5-data-dictionary)
+
+&nbsp;&nbsp;&nbsp;[6. Thách thức và giải pháp](#6-thách-thức-và-giải-pháp)
+
+## 1. Giới thiệu chung
 &nbsp;&nbsp;&nbsp;Trong kỷ nguyên số, khả năng chuyển đổi dữ liệu thô thành những thông tin có giá trị chính là lợi thế cạnh tranh cốt lõi của mọi doanh nghiệp. Tuy nhiên, tình trạng dữ liệu phân mảnh giữa các phòng ban khiến việc tổng hợp dữ liệu trở nên thủ công, tốn kém thời gian và làm chậm trễ các quyết định chiến lược.
 
 ![data-flow (old systems)](https://github.com/trungbui011/data-warehouse-project/blob/main/images/data-flow(old%20systems).png)
@@ -36,7 +62,7 @@
 Dữ liệu thô ban đầu thuộc 2 nguồn giả định CRM và ERP được lưu trong folder [datasets](https://github.com/trungbui011/data-warehouse-project/tree/main/datasets) dưới dạng các file csv.
 ### 4.2 Thiết lập cấu trúc bảng
 Trước khi thiết lập cấu trúc bảng của từng layer, ta cần tạo database trên RDBMS (SQL Server hoặc Oracle). Việc này giúp chuẩn hóa hạ tầng, đảm bảo tính nhất quán và hiệu năng tối ưu cho các tầng dữ liệu phía sau.
-  #### 4.2.1 Tầng Bronze 🥉
+  #### 4.2.1 Tầng Bronze
 - Bước 1: Khởi tạo DDL (Data Definition Language): Xây dựng cấu trúc bảng và định nghĩa kiểu dữ liệu phù hợp với dữ liệu thô từ nguồn. [ddl_bronze.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/ddl_bronze.sql)
 
 - Bước 2: Tự động hóa với Stored Procedures: Thiết lập các thủ tục lưu sẵn (Stored Procedures) để tối ưu hóa hiệu suất nạp dữ liệu và chuẩn hóa quy trình xử lý. [proc_load_bronze.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/proc_load_bronze.sql)
@@ -45,7 +71,7 @@ Chỉ cần 2 bước là đã xây dựng xong cấu trúc của tầng Bronze.
 
 ![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/bronze_tables.png)
 
-  #### 4.2.2 Tầng Silver 🥈
+  #### 4.2.2 Tầng Silver
 - Bước 1: Thiết kế cấu trúc bảng (DDL): Định nghĩa lại các bảng với kiểu dữ liệu chuẩn, xử lý các giá trị rỗng hoặc định dạng không đồng nhất. [ddl_silver.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/2.%20silver_layer/ddl_silver.sql)
 
 - Bước 2: Xử lý và chuẩn hóa dữ liệu (ETL/Transformation Procedures): Sử dụng Stored Procedures để thực hiện các logic như:
@@ -57,7 +83,7 @@ Chỉ cần 2 bước là đã xây dựng xong cấu trúc của tầng Bronze.
     + Ở bảng BRONZE.erp_loc_a101 giá trị trong cột cid là 'AW-00011000'.
 
 Do đó cần phải thống nhất một định dạng để đảm bảo tính toàn vẹn và chính xác khi thực hiện JOIN các bảng ở tầng Gold. Để phục vụ công tác kiểm soát dữ liệu, mỗi bảng được bổ sung cột **dwh_create_date** nhằm theo dõi thời điểm dữ liệu được nạp vào hệ thống. Thao khảo script tại đây: [proc_load_silver.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/2.%20silver_layer/proc_load_silver.sql). 
-  #### 4.2.3 Tầng Gold 🥇
+  #### 4.2.3 Tầng Gold
 Đây là tầng đích, nơi dữ liệu được tổ chức lại theo mô hình Star Schema nhằm tối ưu hóa hiệu suất truy vấn và hỗ trợ trực quan hóa dữ liệu (BI).
 - Tạo mối liên hệ giữa các bảng với nhau thông qua các khóa chính PK (Primary key):
 ![objects relationship](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Objects%20relationship.png)
