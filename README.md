@@ -59,7 +59,7 @@
 ### 4.1 Chuẩn bị Data
 &nbsp;&nbsp;&nbsp;Dữ liệu thô ban đầu thuộc 2 nguồn giả định CRM và ERP được lưu trong folder [datasets](https://github.com/trungbui011/data-warehouse-project/tree/main/datasets) dưới dạng các file csv.
 ### 4.2 Thiết lập cấu trúc bảng
-Trước khi thiết lập cấu trúc bảng của từng layer, ta cần tạo database trên RDBMS (SQL Server hoặc Oracle). Việc này giúp chuẩn hóa hạ tầng, đảm bảo tính nhất quán và hiệu năng tối ưu cho các tầng dữ liệu phía sau.
+&nbsp;&nbsp;&nbsp;Trước khi thiết lập cấu trúc bảng của từng layer, ta cần tạo database trên RDBMS (SQL Server hoặc Oracle). Việc này giúp chuẩn hóa hạ tầng, đảm bảo tính nhất quán và hiệu năng tối ưu cho các tầng dữ liệu phía sau.
   #### 4.2.1 Tầng Bronze
 &nbsp;&nbsp;&nbsp;Bước 1: Khởi tạo DDL (Data Definition Language): Xây dựng cấu trúc bảng và định nghĩa kiểu dữ liệu phù hợp với dữ liệu thô từ nguồn. [ddl_bronze.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/ddl_bronze.sql)
 
