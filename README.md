@@ -30,7 +30,7 @@
 
 ![data-flow (old systems)](https://github.com/trungbui011/data-warehouse-project/blob/main/images/data-flow(old%20systems).png)
 
-&nbsp;&nbsp;&nbsp;Dự án này được xây dựng nhằm giải quyết triệt để những thách thức trên thông qua việc thiết kế và triển khai một kho dữ liệu tập trung (data warehouse). Hệ thống đóng vai trò như một kho lưu trữ hợp nhất, thu thập dữ liệu từ đa dạng các nguồn nghiệp vụ như bán hàng, kế toán, nhân sự... ở mọi thời điểm giúp tối ưu hóa hiệu suất truy vấn cho các hoạt động phân tích và báo cáo.
+&nbsp;&nbsp;&nbsp;Dự án này được xây dựng nhằm giải quyết triệt để những thách thức trên thông qua việc thiết kế và triển khai một kho dữ liệu tập trung (data warehouse). Hệ thống này đóng vai trò như một kho lưu trữ hợp nhất, thu thập dữ liệu từ đa dạng các nguồn nghiệp vụ như bán hàng, kế toán, nhân sự... ở mọi thời điểm giúp tối ưu hóa hiệu suất truy vấn cho các hoạt động phân tích và báo cáo.
 
 ![data-warehouse](https://github.com/trungbui011/data-warehouse-project/blob/main/images/data-flow(new-system).png)
 
@@ -41,15 +41,15 @@
 
 &nbsp;&nbsp;&nbsp;Một số kiến trúc dữ liệu nổi tiếng hiện nay như: Lambda, Kappa, Data Mesh... Mỗi phương pháp đều có ưu, nhược điểm riêng. Trong project này, tôi lựa chọn phương pháp Medallion Architecture nhờ sự nhất quán và kiểm soát chất lượng dữ liệu dựa trên sự phân tầng để xử lý, phù hợp với bộ dữ liệu mà tôi lựa chọn cho Project này. 
 ### 2.1 Medallion Architecture
-**Medallion Architecture** là phương pháp phân tầng để xử lý dữ liệu, ba tầng này là Bronze(Đồng), Silver(Bạc) và Gold (Vàng). Mỗi tầng sẽ có một nhiệm vụ khác nhau để xử lý dữ liệu đầu vào trước khi được mang đi sử dụng.
+&nbsp;&nbsp;&nbsp;**Medallion Architecture** là phương pháp phân tầng để xử lý dữ liệu, ba tầng này là **Bronze(đồng)**, **Silver(bạc)** và **Gold (vàng)**. Mỗi tầng sẽ có một nhiệm vụ khác nhau để xử lý dữ liệu đầu vào trước khi được mang đi sử dụng.
 - Bronze Layer: Lưu trữ dữ liệu thô gốc từ các nguồn để đảm bảo tính an toàn và dễ dàng truy vết.
 - Silver Layer: Làm sạch và chuẩn hóa dữ liệu, đảm bảo tính nhất quán dữ liệu giữa các nguồn.
-- Gold Layer: tái cấu trúc dữ liệu từ các bảng thô thành Data Schema chuyên biệt cho từng đối tượng (objects), tạo ra dữ liệu sạch và đáng tin cậy.
+- Gold Layer: tái cấu trúc dữ liệu từ các bảng thô thành Data Schema chuyên biệt cho từng đối tượng (objects), tạo ra dữ liệu sạch sẵn sàng sử dụng.
 
 ![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Medallion-Architecture.png)
 
 ## 3. Mô hình hóa dữ liệu (Data Modelling)
-&nbsp;&nbsp;&nbsp;Quá trình mô hình hóa dữ liệu được thực hiện ở tầng Gold, nó sẽ tái cấu trúc những dữ liệu đã được xử lý ở tầng Silver thành các bảng mang thông tin, thuộc tính của từng đối tượng (Objects) như: customers, products, sales... Các đối tượng này được phân loại thành 2 dạng là: Bảng Fact (chứa số liệu, phục vụ cho việc tính toán) và Bảng Dim (Dimension - chứa những thông tin mô tả). Các đối tượng sẽ được kết nối với nhau để tạo thành mô hình hóa dữ liệu dựa vào mối quan hệ giữa chúng. Lược đồ biểu diễn mối quan hệ giữa các đối tượng được gọi là Schema (lược đồ).
+&nbsp;&nbsp;&nbsp;Quá trình mô hình hóa dữ liệu được thực hiện ở tầng Gold, sau khi ta đã xác định được những đối tượng chính (tái cấu trúc dữ liệu đã được xử lý ở tầng Silver thành các bảng mang thông tin, thuộc tính của từng đối tượng) như: customers, products, sales... Các đối tượng này được phân loại thành 2 dạng là: **Bảng Fact** (chứa số liệu, phục vụ cho việc tính toán) và **Bảng Dim** (Dimension - chứa những thông tin mô tả). Các đối tượng sẽ được kết nối với nhau để tạo thành mô hình hóa dữ liệu dựa vào mối quan hệ giữa chúng. Lược đồ biểu diễn mối quan hệ giữa các đối tượng được gọi là Schema (lược đồ).
 
 &nbsp;&nbsp;&nbsp;Có hai loại lược đồ dữ liệu phổ biến là: Star Schema (lược đồ hình sao) và Snowflake Schema (lược đồ hình bông tuyết).
 - Star Schema: là một mô hình thiết kế cơ sở dữ liệu phổ biến trong Data Warehouse, bao gồm một bảng Fact ở trung tâm và được bao quanh bởi các bảng Dimension vệ tinh chứa thông tin mô tả chi tiết.
@@ -59,42 +59,48 @@
 
 ## 4. Triển khai dự án (Project Implementation)
 ### 4.1 Chuẩn bị Data
-Dữ liệu thô ban đầu thuộc 2 nguồn giả định CRM và ERP được lưu trong folder [datasets](https://github.com/trungbui011/data-warehouse-project/tree/main/datasets) dưới dạng các file csv.
+&nbsp;&nbsp;&nbsp;Dữ liệu thô ban đầu thuộc 2 nguồn giả định CRM và ERP được lưu trong folder [datasets](https://github.com/trungbui011/data-warehouse-project/tree/main/datasets) dưới dạng các file csv.
 ### 4.2 Thiết lập cấu trúc bảng
 Trước khi thiết lập cấu trúc bảng của từng layer, ta cần tạo database trên RDBMS (SQL Server hoặc Oracle). Việc này giúp chuẩn hóa hạ tầng, đảm bảo tính nhất quán và hiệu năng tối ưu cho các tầng dữ liệu phía sau.
   #### 4.2.1 Tầng Bronze
-- Bước 1: Khởi tạo DDL (Data Definition Language): Xây dựng cấu trúc bảng và định nghĩa kiểu dữ liệu phù hợp với dữ liệu thô từ nguồn. [ddl_bronze.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/ddl_bronze.sql)
+&nbsp;&nbsp;&nbsp;Bước 1: Khởi tạo DDL (Data Definition Language): Xây dựng cấu trúc bảng và định nghĩa kiểu dữ liệu phù hợp với dữ liệu thô từ nguồn. [ddl_bronze.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/ddl_bronze.sql)
 
-- Bước 2: Tự động hóa với Stored Procedures: Thiết lập các thủ tục lưu sẵn (Stored Procedures) để tối ưu hóa hiệu suất nạp dữ liệu và chuẩn hóa quy trình xử lý. [proc_load_bronze.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/proc_load_bronze.sql)
+&nbsp;&nbsp;&nbsp;Bước 2: Tự động hóa với Stored Procedures: Thiết lập câu lệnh lưu trữ script vào database (Stored Procedures) để tối ưu hóa hiệu suất nạp dữ liệu và chuẩn hóa quy trình xử lý. [proc_load_bronze.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/proc_load_bronze.sql)
 
-Chỉ cần 2 bước là đã xây dựng xong cấu trúc của tầng Bronze. Dữ liệu thô đưa vào tầng Bronze được giữ nguyên toàn bộ cấu trúc và định dạng. Mục đích là để truy vết và xác định lỗi nếu ta gặp lỗi ở tầng Silver hay Gold.
+&nbsp;&nbsp;&nbsp;Dữ liệu thô đưa vào tầng Bronze được giữ nguyên toàn bộ cấu trúc và định dạng. Mục đích là để dễ truy vết và xác định lỗi nếu ta gặp lỗi ở tầng Silver hay Gold.
 
 ![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/bronze_tables.png)
 
   #### 4.2.2 Tầng Silver
-- Bước 1: Thiết kế cấu trúc bảng (DDL): Định nghĩa lại các bảng với kiểu dữ liệu chuẩn, xử lý các giá trị rỗng hoặc định dạng không đồng nhất. [ddl_silver.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/2.%20silver_layer/ddl_silver.sql)
+&nbsp;&nbsp;&nbsp;Bước 1: Thiết kế cấu trúc bảng (DDL): Định nghĩa lại các bảng với kiểu dữ liệu chuẩn, cũng tương tự như tầng Bronze nhưng lần này cần siết chặt điều kiện hơn nữa [ddl_silver.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/2.%20silver_layer/ddl_silver.sql)
 
-- Bước 2: Xử lý và chuẩn hóa dữ liệu (ETL/Transformation Procedures): Sử dụng Stored Procedures để thực hiện các logic như:
-+ Data Cleansing: loại bỏ giá trị trùng lặp, xử lý các giá trị rỗng (NULL)
-+ Thống nhất định dạng: (ngày tháng, tiền tệ...) và biến thể của dữ liệu (vd: 'US', 'USA' và 'United States' thống nhất chuyển về thành United States)
-+ Đồng bộ hóa các khóa: khắc phục vấn đề khi dữ liệu bị phân mảnh, ví dụ cùng 1 id khách hàng '11000':
-    + Ở bảng BRONZE.erp_cust_az12 giá trị trong cột cid là 'NASAW00011000',
-    + Ở bảng BRONZE.crm_cust_info giá trị trong cột cst_key là 'AW00011000',
-    + Ở bảng BRONZE.erp_loc_a101 giá trị trong cột cid là 'AW-00011000'.
+&nbsp;&nbsp;&nbsp;Bước 2: Xử lý và chuẩn hóa dữ liệu (ETL): Ở tầng Silver này cần xử lý những trường hợp dữ liệu sau:
+- Data Cleansing: loại bỏ giá trị trùng lặp, xử lý các giá trị rỗng (NULL)
+- Thống nhất định dạng: (ngày tháng) và biến thể của dữ liệu (vd: 'US', 'USA' và 'United States' -> 'United States')
+- Đồng bộ hóa các khóa: khắc phục vấn đề khi dữ liệu bị phân mảnh, ví dụ cùng 1 **id** khách hàng **'11000'**:
+  - Ở bảng **BRONZE.erp_cust_az12** giá trị trong cột **cid** là **'NASAW00011000'**,
+  - Ở bảng **BRONZE.crm_cust_info** giá trị trong cột **cst_key** là **'AW00011000'**,
+  - Ở bảng **BRONZE.erp_loc_a101** giá trị trong cột **cid** là **'AW-00011000'**.
 
-Do đó cần phải thống nhất một định dạng để đảm bảo tính toàn vẹn và chính xác khi thực hiện JOIN các bảng ở tầng Gold. Để phục vụ công tác kiểm soát dữ liệu, mỗi bảng được bổ sung cột **dwh_create_date** nhằm theo dõi thời điểm dữ liệu được nạp vào hệ thống. Thao khảo script tại đây: [proc_load_silver.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/2.%20silver_layer/proc_load_silver.sql). 
+&nbsp;&nbsp;&nbsp;Do đó cần phải thống nhất một định dạng để đảm bảo tính toàn vẹn và chính xác trước khi thực hiện JOIN các bảng ở tầng Gold. Để dễ dàng đối soát và kiểm tra dữ liệu, mỗi bảng được bổ sung cột **dwh_create_date** nhằm theo dõi thời điểm dữ liệu được nạp vào hệ thống (chi tiết đến từng mili giây).
+
+&nbsp;&nbsp;&nbsp;Tham khảo script Stored Procedures của tầng Silver tại đây: [proc_load_silver.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/2.%20silver_layer/proc_load_silver.sql). 
   #### 4.2.3 Tầng Gold
-Đây là tầng đích, nơi dữ liệu được tổ chức lại theo mô hình Star Schema nhằm tối ưu hóa hiệu suất truy vấn và hỗ trợ trực quan hóa dữ liệu (BI).
-- Tạo mối liên hệ giữa các bảng với nhau thông qua các khóa chính PK (Primary key):
+&nbsp;&nbsp;&nbsp;Đây là tầng cuối cùng, dữ liệu bây giờ sẽ được tổ chức lại theo mô hình Star Schema để phù hợp với quy mô của bộ dữ liệu, nhằm tối ưu hiệu suất truy vấn và hỗ trợ trực quan hóa dữ liệu (BI).
+
+&nbsp;&nbsp;&nbsp;Mối liên hệ giữa các bảng được kết nối với nhau thông qua các khóa chính PK (Primary key):
+
 ![objects relationship](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Objects%20relationship.png)
 
-Data flow của project này được trình bày chi tiết như hình dưới:
+&nbsp;&nbsp;&nbsp;Data flow của project này được trình bày chi tiết như hình dưới:
+
 ![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/project-data-flow.png)
 
-- Dưới đây là scripts SQL tạo 3 objects cho tầng Gold dựa theo data flow: [ddl_gold.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/3.%20gold_layer/ddl_gold.sql)
+&nbsp;&nbsp;&nbsp;Dưới đây là scripts SQL tạo 3 objects cho tầng Gold dựa theo data flow: [ddl_gold.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/3.%20gold_layer/ddl_gold.sql)
 
-- Sử dụng Star schema để mô hình hóa 3 objects này:
+&nbsp;&nbsp;&nbsp;Sử dụng Star schema để mô hình hóa 3 objects này:
+
 ![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/star%20schema.png)
 ## 5. Data Dictionary
-- [Catalog](https://github.com/trungbui011/data-warehouse-project/blob/main/docs/data_catalog.md)
+&nbsp;&nbsp;&nbsp;Từ điển data này sẽ mô tả chi tiết tên từng cột, kiểu dữ liệu và ý nghĩa của nó đối với object đó, hãy tham khảo data dictionary tại: [data_catalog](https://github.com/trungbui011/data-warehouse-project/blob/main/docs/data_catalog.md)
 ## 6. Thách thức và giải pháp
