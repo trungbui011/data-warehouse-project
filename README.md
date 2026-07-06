@@ -103,4 +103,3 @@ Trước khi thiết lập cấu trúc bảng của từng layer, ta cần tạo
 ![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/star%20schema.png)
 ## 5. Data Dictionary
 &nbsp;&nbsp;&nbsp;Từ điển data này sẽ mô tả chi tiết tên từng cột, kiểu dữ liệu và ý nghĩa của nó đối với object đó, hãy tham khảo data dictionary tại: [data_catalog](https://github.com/trungbui011/data-warehouse-project/blob/main/docs/data_catalog.md)
-## 6. Thách thức và giải pháp
