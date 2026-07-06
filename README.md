@@ -23,8 +23,6 @@
 
 &nbsp;&nbsp;&nbsp;[5. Data Dictionary](#5-data-dictionary)
 
-&nbsp;&nbsp;&nbsp;[6. Thách thức và giải pháp](#6-thách-thức-và-giải-pháp)
-
 ## 1. Giới thiệu chung
 &nbsp;&nbsp;&nbsp;Trong kỷ nguyên số, khả năng chuyển đổi dữ liệu thô thành những thông tin có giá trị chính là lợi thế cạnh tranh cốt lõi của mọi doanh nghiệp. Tuy nhiên, tình trạng dữ liệu phân mảnh giữa các phòng ban khiến việc tổng hợp dữ liệu trở nên thủ công, tốn kém thời gian và làm chậm trễ các quyết định chiến lược.
 
@@ -101,5 +99,6 @@ Trước khi thiết lập cấu trúc bảng của từng layer, ta cần tạo
 &nbsp;&nbsp;&nbsp;Sử dụng Star schema để mô hình hóa 3 objects này:
 
 ![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/star%20schema.png)
+
 ## 5. Data Dictionary
 &nbsp;&nbsp;&nbsp;Từ điển data này sẽ mô tả chi tiết tên từng cột, kiểu dữ liệu và ý nghĩa của nó đối với object đó, hãy tham khảo data dictionary tại: [data_catalog](https://github.com/trungbui011/data-warehouse-project/blob/main/docs/data_catalog.md)
