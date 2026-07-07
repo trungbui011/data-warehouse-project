@@ -42,7 +42,7 @@ BEGIN
 	CREATE TABLE bronze.crm_sales_details (
 		sls_ord_num NVARCHAR(50),
 		sls_prd_key NVARCHAR(50),
-		sls_cust_id NVARCHAR(50)),
+		sls_cust_id NVARCHAR(50),
 		sls_order_dt NVARCHAR(50),
 		sls_ship_dt NVARCHAR(50),
 		sls_due_dt NVARCHAR(50),
