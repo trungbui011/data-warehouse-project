@@ -24,7 +24,8 @@ BEGIN
 		PRINT '------------------------------------------------';
 		PRINT 'Loading CRM Tables';
 		PRINT '------------------------------------------------';
-		-- 1
+		
+-- 1. Bảng 1: crm_cust_info
 		SET @start_time = GETDATE();
 		CREATE TABLE #temp_crm_cust_info( -- Tạo bảng tạm để kiểm tra data sắp được nạp vào. Nếu dữ liệu bị lặp (duplicate) -> update thời gian cập nhật, nếu ID mới -> thêm vào bảng chính
 			cst_id NVARCHAR(50),
@@ -66,20 +67,28 @@ BEGIN
     	WHEN NOT MATCHED BY TARGET THEN
         INSERT (cst_id, cst_key, cst_firstname, cst_lastname, cst_marital_status, cst_gndr, cst_create_date, dwh_create_date)
         VALUES (Source.cst_id, Source.cst_key, Source.cst_firstname, Source.cst_lastname, Source.cst_marital_status, Source.cst_gndr, Source.cst_create_date, GETDATE());
-    	-- 4. Xóa bảng tạm
+    	-- Xóa bảng tạm
     	DROP TABLE #temp_crm_cust_info; 
 			
 		SET @end_time = GETDATE();
 		PRINT'>>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT'------------------------------------------------'
 
-		-- 2.
+-- 2. Bảng 2: crm_prd_info
 		SET @start_time = GETDATE();
-		PRINT '>>> Truncating Table: bronze.crm_prd_info'
-		TRUNCATE TABLE bronze.crm_prd_info;
+		CREATE TABLE #temp_crm_prd_info(
+			prd_id INT,
+			prd_key NVARCHAR(50),
+			prd_nm NVARCHAR(50),
+			prd_cost INT,
+			prd_line NVARCHAR(50),
+			prd_start_dt DATE,
+			prd_end_dt DATE,
+			dwh_create_date DATETIME DEFAULT GETDATE()
+		)
 
-		PRINT '>>> Inserting Data Into: bronze.crm_prd_info'
-		BULK INSERT bronze.crm_prd_info
+		PRINT '>>> Inserting data into temp table'
+		BULK INSERT #temp_crm_prd_info
 		FROM 'D:\Desktop\Workplace\dwh_project\datasets\source_crm\prd_info.csv'
 		WITH (
 			FIELDTERMINATOR = ',',
@@ -87,17 +96,48 @@ BEGIN
 			FIRSTROW = 2,
 			TABLOCK
 		);
+
+		PRINT 'Merging data into bronze.crm_prd_info'
+		MERGE bronze.crm_prd_info AS TARGET
+		USING #temp_crm_prd_info AS SOURCE
+		ON (TARGET.prd_id = SOURCE.prd_id)
+
+		WHEN MATCHED THEN
+		UPDATE SET
+			TARGET.prd_key = SOURCE.prd_key,
+			TARGET.prd_nm = SOURCE.prd_nm,
+			TARGET.prd_cost = SOURCE.prd_cost,
+			TARGET.prd_line = SOURCE.prd_line,
+			TARGET.prd_start_dt = SOURCE.prd_start_dt,
+			TARGET.prd_end_dt = SOURCE.prd_end_dt,
+			TARGET.dwh_create_date = GETDATE()
+
+		WHEN NOT MATCHED BY TARGET THEN
+		INSERT(prd_id, prd_key, prd_nm, prd_cost, prd_line, prd_start_dt, prd_end_dt, dwh_create_date)
+		VALUES(TARGET.prd_id, TARGET.prd_key, TARGET.prd_nm, TARGET.prd_cost, TARGET.prd_line, TARGET.prd_start_dt, TARGET.prd_end_dt, GETDATE());
+		DROP TABLE #temp_crm_prd_info;
+	
 		SET @end_time = GETDATE();
 		PRINT'>>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT'------------------------------------------------';
 
-		-- 3.
+	-- 3. Bảng 3. crm_sales_details
 		SET @start_time = GETDATE();
-		PRINT '>>> Truncating Table: crm_sales_details'
-		TRUNCATE TABLE bronze.crm_sales_details;
+		CREATE TABLE #temp_crm_sales_details(
+			sls_ord_num NVARCHAR(50),
+			sls_prd_key NVARCHAR(50),
+			sls_cust_id NVARCHAR(50)),
+			sls_order_dt NVARCHAR(50),
+			sls_ship_dt NVARCHAR(50),
+			sls_due_dt NVARCHAR(50),
+			sls_sales NVARCHAR(50),
+			sls_quantity NVARCHAR(50),
+			sls_price NVARCHAR(50),
+			dwh_create_date DATETIME DEFAULT GETDATE()
+		);
 
-		PRINT '>>> Inserting Data Into: crm_sales_details'
-		BULK INSERT bronze.crm_sales_details
+		PRINT '>>> Inserting data into temp table'
+		BULK INSERT #temp_crm_sales_details
 		FROM 'D:\Desktop\Workplace\dwh_project\datasets\source_crm\sales_details.csv'
 		WITH (
 			FIELDTERMINATOR = ',',
@@ -105,6 +145,29 @@ BEGIN
 			FIRSTROW = 2,
 			TABLOCK
 		);
+
+		PRINT 'Merging data into bronze.crm_sales_details'
+		MERGE bronze.crm_sales_details AS TARGET
+		USING #temp_crm_sales_details AS SOURCE
+		ON TARGET.sls_cust_id = SOURCE.sls_cust_id 
+		AND TARGET.sls_prd_key = SOURCE.sls_prd_key
+
+		WHEN MATCHED THEN
+		UPDATE SET
+			TARGET.sls_ord_num = SOURCE.sls_ord_num,
+			TARGET.sls_order_dt = SOURCE.sls_order_dt,
+			TARGET.sls_ship_dt = SOURCE.sls_ship_dt,
+			TARGET.sls_due_dt = SOURCE.sls_due_dt,
+			TARGET.sls_sales = SOURCE.sls_sales,
+			TARGET.sls_quantity = SOURCE.sls_quantity,
+			TARGET.sls_price = SOURCE.sls_price,
+			TARGET.dwh_create_date = GETDATE()
+			
+		WHEN NOT MATCHED BY TARGET THEN
+		INSERT(sls_ord_num, sls_prd_key, sls_cust_id, sls_order_dt, sls_ship_dt, sls_due_dt, sls_sales, sls_quantity, sls_price, dwh_create_date)
+		VALUES(SOURCE.sls_ord_num, SOURCE.sls_prd_key, SOURCE.sls_cust_id, SOURCE.sls_order_dt, SOURCE.sls_ship_dt, SOURCE.sls_due_dt, SOURCE.sls_sales, SOURCE.sls_quantity, SOURCE.sls_price, GETDATE());
+		DROP #temp_crm_sales_details;
+	
 		SET @end_time = GETDATE();
 		PRINT' Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 
@@ -112,13 +175,17 @@ BEGIN
 		PRINT 'Loading ERP Tables';
 		PRINT '------------------------------------------------';
 
-		-- 4.
+-- 4. Bảng 4. erp_cust_az12
 		SET @start_time = GETDATE();
-		PRINT '>>> Truncating Table: bronze.erp_cust_az12'
-		TRUNCATE TABLE bronze.erp_cust_az12
+		CREATE TABLE #temp_erp_cust_az12(
+			cid NVARCHAR(50),
+			bdate DATE,
+			gen NVARCHAR(50),
+			dwh_create_date DATETIME DEFAULT GETDATE()
+		);
 
-		PRINT '>>> Inserting Data Into: bronze.erp_cust_az12'
-		BULK INSERT bronze.erp_cust_az12
+		PRINT '>>> Inserting data into temp table'
+		BULK INSERT #temp_erp_cust_az12
 		FROM 'D:\Desktop\Workplace\dwh_project\datasets\source_erp\cust_az12.csv'
 		WITH (
 			FIELDTERMINATOR = ',',
@@ -126,17 +193,36 @@ BEGIN
 			FIRSTROW = 2,
 			TABLOCK
 		);
+
+		MERGE bronze.erp_cust_az12 AS TARGET
+		USING #temp_erp_cust_az12 AS SOURCE
+		ON TARGET.cid = SOURCE.cid
+
+		WHEN MATCHED THEN
+		UPDATE SET
+			TARGET.bdate = SOURCE.bdate,
+			TARGET.gen = SOURCE.gen,
+			TARGET.dwh_create_date = GETDATE()
+
+		WHEN NOT MATCHED BY TARGET THEN
+		INSERT(cid, bdate, gen, dwh_create_date)
+		VALUES(SOURCE.cid, SOURCE.bdate, SOURCE.gen, GETDATE());
+		DROP #temp_erp_cust_az12
+			
 		SET @end_time = GETDATE();
 		PRINT'>>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT'------------------------------------------------';
 
-		-- 5.
+-- 5. Bảng 5. erp_loc_a101
 		SET @start_time = GETDATE();
-		PRINT '>>> Truncating Table: bronze.erp_loc_a101'
-		TRUNCATE TABLE bronze.erp_loc_a101
+		CREATE TABLE #temp_erp_loc_a101(
+			cid NVARCHAR(50),
+			cntry NVARCHAR(50),
+			dwh_create_date DATETIME DEFAULT GETDATE()
+		);
 
-		PRINT '>>> Inserting Data Into: bronze.erp_loc_a101'
-		BULK INSERT bronze.erp_loc_a101
+		PRINT '>>> Inserting data into temp table'
+		BULK INSERT #temp_erp_loc_a101
 		FROM 'D:\Desktop\Workplace\dwh_project\datasets\source_erp\loc_a101.csv'
 		WITH (
 			FIELDTERMINATOR = ',',
@@ -144,17 +230,37 @@ BEGIN
 			FIRSTROW = 2,
 			TABLOCK
 		);
+
+		MERGE bronze.erp_loc_a101 AS TARGET
+		USING #temp_erp_loc_a101 AS SOURCE
+		ON TARGET.cid = SOURCE.cid
+
+		WHEN MATCHED THEN
+		UPDATE SET
+			TARGET.cntry = SOURCE.cntry
+			TARGET.dwh_create_date = GETDATE()
+
+		WHEN NOT MATCHED BY TARGET THEN
+		INSERT(cid, cntry, dwh_create_date)
+		VALUES(SOURCE.cid, SOURCE.cntry, GETDATE());
+		DROP #temp_erp_loc_a101
+			
 		SET @end_time = GETDATE();
 		PRINT'>>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT'------------------------------------------------';
 
-		-- 6.
+-- 6. Bảng 6: erp_px_cat_g1v2
 		SET @start_time = GETDATE();
-		PRINT '>>> Truncating Table: bronze.erp_px_cat_g1v2'
-		TRUNCATE TABLE bronze.erp_px_cat_g1v2
+		CREATE TABLE #temp_erp_px_cat_g1v2(		
+			id NVARCHAR(50),
+			cat NVARCHAR(50),
+			subcat NVARCHAR(50),
+			maintenance NVARCHAR(50),
+			dwh_create_date DATETIME DEFAULT GETDATE()
+		);
 
-		PRINT '>>> Inserting Data Into: bronze.erp_px_cat_g1v2'
-		BULK INSERT bronze.erp_px_cat_g1v2
+		PRINT '>>> Inserting data into temp table'
+		BULK INSERT #temp_erp_px_cat_g1v2
 		FROM 'D:\Desktop\Workplace\dwh_project\datasets\source_erp\px_cat_g1v2.csv'
 		WITH (
 			FIELDTERMINATOR = ',',
@@ -162,6 +268,23 @@ BEGIN
 			FIRSTROW = 2,
 			TABLOCK
 		);
+
+		MERGE bronze.erp_px_cat_g1v2 AS TARGET
+		USING #temp_erp_px_cat_g1v2 AS SOURCE
+		ON TARGET.id = SOURCE.id
+
+		WHEN MATCHED THEN
+		UPDATE SET
+			TARGET.cat = SOURCE.cat,
+			TARGET.subcat = SOURCE.subcat,
+			TARGET.maintenance = SOURCE.maintenance,
+			TARGET.dwh_create_date = GETDATE()
+
+		WHEN NOT MATCHED BY TARGET THEN
+		INSERT(id, cat, subcat, maintenance, dwh_create_date)
+		VALUES(SOURCE.id, SOURCE.cat, SOURCE.subcat, SOURCE.maintenance, GETDATE());
+		DROP #temp_erp_px_cat_g1v2;
+			
 		SET @end_time = GETDATE();
 		PRINT'>>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT'------------------------------------------------';
