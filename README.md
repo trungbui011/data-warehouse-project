@@ -44,7 +44,7 @@
 - Silver Layer: Làm sạch và chuẩn hóa dữ liệu, đảm bảo tính nhất quán dữ liệu giữa các nguồn.
 - Gold Layer: tái cấu trúc dữ liệu từ các bảng thô thành Data Schema chuyên biệt cho từng đối tượng (objects), tạo ra dữ liệu sạch sẵn sàng sử dụng.
 
-![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Medallion-Architecture.png)
+![Architecture](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Medallion-Architecture.png)
 
 ## 3. Mô hình hóa dữ liệu (Data Modelling)
 &nbsp;&nbsp;&nbsp;Quá trình mô hình hóa dữ liệu được thực hiện ở tầng Gold, sau khi ta đã xác định được những đối tượng chính (tái cấu trúc dữ liệu đã được xử lý ở tầng Silver thành các bảng mang thông tin, thuộc tính của từng đối tượng) như: customers, products, sales... Các đối tượng này được phân loại thành 2 dạng là: **Bảng Fact** (chứa số liệu, phục vụ cho việc tính toán) và **Bảng Dim** (Dimension - chứa những thông tin mô tả). Các đối tượng sẽ được kết nối với nhau để tạo thành mô hình hóa dữ liệu dựa vào mối quan hệ giữa chúng. Lược đồ biểu diễn mối quan hệ giữa các đối tượng được gọi là Schema (lược đồ).
