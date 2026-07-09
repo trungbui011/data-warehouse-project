@@ -53,7 +53,7 @@
 - Star Schema: là một mô hình thiết kế cơ sở dữ liệu phổ biến trong Data Warehouse, bao gồm một bảng Fact ở trung tâm và được bao quanh bởi các bảng Dimension vệ tinh chứa thông tin mô tả chi tiết.
 - Snowflake Schema: là mô hình nâng cấp của Star Schema, lúc này các bảng Dimension được chuẩn hóa thành nhiều cấp độ để giảm thiểu dư thừa dữ liệu. Mô hình này phù hợp khi cần đảm bảo tính toàn vẹn dữ liệu cao và cấu trúc logic phức tạp.
 
-![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Schemas.png)
+![Schema](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Schemas.png)
 
 ## 4. Triển khai dự án (Project Implementation)
 ### 4.1 Chuẩn bị Data
@@ -98,7 +98,7 @@
 
 &nbsp;&nbsp;&nbsp;Sử dụng Star schema để mô hình hóa 3 objects này:
 
-![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/star%20schema.png)
+![scm](https://github.com/trungbui011/data-warehouse-project/blob/main/images/star%20schema.png)
 
 ## 5. Data Dictionary
 &nbsp;&nbsp;&nbsp;Từ điển data này sẽ mô tả chi tiết tên từng cột, kiểu dữ liệu và ý nghĩa của nó đối với object đó, hãy tham khảo data dictionary tại: [data_catalog](https://github.com/trungbui011/data-warehouse-project/blob/main/docs/data_catalog.md)
