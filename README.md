@@ -65,7 +65,7 @@
 
 &nbsp;&nbsp;&nbsp;Bước 2: Tự động hóa với Stored Procedures: Thiết lập câu lệnh lưu trữ script vào database (Stored Procedures) để tối ưu hóa hiệu suất nạp dữ liệu và chuẩn hóa quy trình xử lý. [proc_load_bronze.sql](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/1.%20bronze_layer/proc_load_bronze.sql)
 
-&nbsp;&nbsp;&nbsp;Dữ liệu thô đưa vào tầng Bronze được giữ nguyên toàn bộ cấu trúc và định dạng. Mục đích là để dễ truy vết và xác định lỗi nếu ta gặp lỗi ở tầng Silver hay Gold.
+&nbsp;&nbsp;&nbsp;Dữ liệu thô đưa vào tầng Bronze được giữ nguyên toàn bộ cấu trúc và định dạng. Mục đích là để dễ truy vết và xác định lỗi nếu ta gặp lỗi ở tầng Silver hay Gold. Dữ liệu được nạp vào tự động định kỳ có hệ thống kiểm tra để tránh lỗi lặp dữ liệu (duplicate data), tối ưu không gian lưu trữ và xử lý data.
 
 ![](https://github.com/trungbui011/data-warehouse-project/blob/main/images/bronze_tables.png)
 
