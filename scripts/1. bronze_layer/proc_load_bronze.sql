@@ -1,15 +1,16 @@
 /*
-Stored Procedure: Load Bronze Layer (Import Data from Sources to Bronze)
-- This stored procedure truncate all data from every single table before loading data from ERP and CRM CSV file into the Bronze schema
-- BULK INSERT is used for loading data from sources into Bronze layer.
-- Run 'EXEC bronze.load_bronze' will run the script below automatically.
+The data processing workflow for the Bronze layer is as follows:
+- The system creates a staging table for each target table to filter incoming data before loading it into the Bronze layer.
++ For records with duplicate IDs within each table, the data is updated based on the most recent timestamp (to prevent data duplication errors).
++ For records with new IDs, the system automatically ingests them into the Bronze layer while filtering out any null (NULL) rows.
 
-- Stored Produce sẽ xóa toàn bộ dữ liệu trước đó trong từng bảng của lớp Bronze trước khi load dữ liệu (file CSV) từ các nguồn ERP hoặc CRM vào cấu trúc Bronze
-- Câu lệnh BULK INSERT dùng để tải lên một lượng lớn dữ liệu từ nguồn đến lớp Bronze
-- Câu lệnh EXEC bronze.load_bronze dùng để load tự động script bên dưới.
+Quy trình xử lý data của tầng Bronze như sau:
+- Hệ thống sẽ tạo 1 bảng tạm cho từng Table để sàng lọc data đầu vào trước khi nạp vào tầng Bronze
++ Với dữ liệu trùng id ở mỗi bảng, data sẽ được cập nhật theo thời gian thực gần nhất (tránh lỗi duplicate data).
++ Với dữ liệu có id mới, hệ thống sẽ tự động nạp data vào tầng Bronze, nó cũng sẽ lọc những dòng data rỗng (NULL)
 */
 
-EXEC bronze.load_bronze
+EXEC bronze.load_bronze -- Câu lệnh này chỉ được sử dụng sau khi lưu scripts bên dưới vào trong database. EXEC là câu lệnh load scripts đã được lưu vào database bằng cách gọi tên chúng
 
 -- CREATE STORED PROCEDURE
 CREATE OR ALTER PROCEDURE [BRONZE].[load_bronze] AS
@@ -52,7 +53,7 @@ BEGIN
 		USING (
 			SELECT * FROM (
 				SELECT *, ROW_NUMBER() OVER (PARTITION BY cst_id ORDER BY (SELECT NULL)) AS rn
-				FROM #temp_crm_cust_info -- Loại bỏ dòng trống, dòng NULL ngay từ đầu
+				FROM #temp_crm_cust_info -- Loại bỏ dòng trống, NULL
 				WHERE cst_id IS NOT NULL AND cst_id <> '' 
 			) t WHERE t.rn = 1
 		) AS Source
@@ -154,7 +155,7 @@ BEGIN
 		USING (
 			SELECT * FROM (
 				SELECT *, ROW_NUMBER() OVER (PARTITION BY sls_ord_num, sls_prd_key ORDER BY (SELECT NULL)) AS rn
-				FROM #temp_crm_sales_details -- Loại bỏ dòng trống (kiểm tra cột Key chính)
+				FROM #temp_crm_sales_details -- Loại bỏ dòng trống
 				WHERE sls_ord_num IS NOT NULL AND sls_ord_num <> ''
 			) t WHERE t.rn = 1
 		) AS SOURCE
