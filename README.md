@@ -102,4 +102,4 @@
 ![scm](https://github.com/trungbui011/data-warehouse-project/blob/main/images/star%20schema.png)
 
 ## 5. Data Dictionary
-&nbsp;&nbsp;&nbsp;Từ điển data này sẽ mô tả chi tiết tên từng cột, kiểu dữ liệu và ý nghĩa của nó đối với object đó, hãy tham khảo data dictionary bằng  [Tiếng Anh](https://github.com/trungbui011/data-warehouse-project/blob/main/docs/data_catalog.md) hoặc [Tiếng Việt](https://github.com/trungbui011/data-warehouse-project/blob/main/docs/data_catalog%20(Vietnamese%20Version).md)
+&nbsp;&nbsp;&nbsp;Từ điển data này sẽ mô tả chi tiết tên từng cột, kiểu dữ liệu và ý nghĩa của nó đối với object đó, hãy tham khảo data dictionary bằng  [Tiếng Anh](https://github.com/trungbui011/data-warehouse-project/blob/main/docs/data_catalog%20(English%20Version).md) hoặc [Tiếng Việt](https://github.com/trungbui011/data-warehouse-project/blob/main/docs/data_catalog%20(Vietnamese%20Version).md)
