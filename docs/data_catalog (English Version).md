@@ -1,5 +1,8 @@
 # DATA DICTIONARY FOR GOLD LAYER
 
+STAR SCHEMA CỦA TẦNG GOLD:
+![](https://github.com/trungbui011/data-warehouse-project/raw/main/images/star%20schema.png)
+
 1. gold.dim_customers
 - Purpose: Stores customer details enriched with demographic and geographic data
 - Columns:
