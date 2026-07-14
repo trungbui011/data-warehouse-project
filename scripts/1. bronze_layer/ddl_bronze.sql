@@ -1,13 +1,9 @@
 /*
-CREATE BRONZE TABLES
-- This script creates tables in the Bronze schema and drops existing tables if they already existed
-
-TẠO CÁC BẢNG CHO LỚP BRONZE
-- Script này dùng để tạo cấu trúc cho các bảng của lớp Bronze, những bảng trùng tên đã tồn tại từ trước sẽ bị xóa đi để xây dựng cấu trúc mới.
-
+TẠO CÁC BẢNG CHO TẦNG BRONZE
+- Script này dùng để tạo cấu trúc cho các bảng của tầng Bronze, những bảng trùng tên đã tồn tại từ trước sẽ bị xóa đi để xây dựng cấu trúc mới.
 */
 
-IF OBJECT_ID ('bronze.crm_cust_info', 'U') IS NULL -- Nếu bảng không tồn tại -> Trả về rỗng (NULL); Nếu bảng tồn tại (không rỗng) -> Drop table
+IF OBJECT_ID ('bronze.crm_cust_info', 'U') IS NULL -- Nếu bảng không tồn tại (IS NULL) -> Tạo bảng; Nếu bảng tồn tại (không rỗng) -> Drop table
 BEGIN
 	CREATE TABLE bronze.crm_cust_info (
 		cst_id NVARCHAR(50),
@@ -22,7 +18,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID ('bronze.crm_prd_info', 'U') IS NULL -- Nếu bảng không tồn tại -> Trả về rỗng (NULL); Nếu bảng tồn tại (không rỗng) -> Drop table
+IF OBJECT_ID ('bronze.crm_prd_info', 'U') IS NULL -- Nếu bảng không tồn tại (IS NULL) -> Tạo bảng; Nếu bảng tồn tại (không rỗng) -> Drop table
 BEGIN
 	CREATE TABLE bronze.crm_prd_info (
 		prd_id INT,
@@ -37,7 +33,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID ('bronze.crm_sales_details', 'U') IS NULL -- Nếu bảng không tồn tại -> Trả về rỗng (NULL); Nếu bảng tồn tại (không rỗng) -> Drop table
+IF OBJECT_ID ('bronze.crm_sales_details', 'U') IS NULL -- Nếu bảng không tồn tại (IS NULL) -> Tạo bảng; Nếu bảng tồn tại (không rỗng) -> Drop table
 BEGIN
 	CREATE TABLE bronze.crm_sales_details (
 		sls_ord_num NVARCHAR(50),
@@ -54,7 +50,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID ('bronze.erp_cust_az12', 'U') IS NULL -- Nếu bảng không tồn tại -> Trả về rỗng (NULL); Nếu bảng tồn tại (không rỗng) -> Drop table
+IF OBJECT_ID ('bronze.erp_cust_az12', 'U') IS NULL -- Nếu bảng không tồn tại (IS NULL) -> Tạo bảng; Nếu bảng tồn tại (không rỗng) -> Drop table
 BEGIN
 	CREATE TABLE bronze.erp_cust_az12 (
 		cid NVARCHAR(50),
@@ -65,7 +61,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID ('bronze.erp_loc_a101', 'U') IS NULL -- Nếu bảng không tồn tại -> Trả về rỗng (NULL); Nếu bảng tồn tại (không rỗng) -> Drop table
+IF OBJECT_ID ('bronze.erp_loc_a101', 'U') IS NULL -- Nếu bảng không tồn tại (IS NULL) -> Tạo bảng; Nếu bảng tồn tại (không rỗng) -> Drop table
 BEGIN
 	CREATE TABLE bronze.erp_loc_a101(
 		cid NVARCHAR(50),
@@ -75,7 +71,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID ('bronze.erp_px_cat_g1v2', 'U') IS NULL -- Nếu bảng không tồn tại -> Trả về rỗng (NULL); Nếu bảng tồn tại (không rỗng) -> Drop table
+IF OBJECT_ID ('bronze.erp_px_cat_g1v2', 'U') IS NULL -- Nếu bảng không tồn tại (IS NULL) -> Tạo bảng; Nếu bảng tồn tại (không rỗng) -> Drop table
 BEGIN
 	CREATE TABLE bronze.erp_px_cat_g1v2(
 		id NVARCHAR(50),
