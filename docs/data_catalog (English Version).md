@@ -1,6 +1,6 @@
 # DATA DICTIONARY FOR GOLD LAYER
 
-Star Schema của tầng Gold:
+Gold Layer Star Schema:
 
 ![](https://github.com/trungbui011/data-warehouse-project/raw/main/images/star%20schema.png)
 
