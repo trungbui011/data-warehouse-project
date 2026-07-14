@@ -4,9 +4,8 @@ Star Schema của tầng Gold:
 
 ![](https://github.com/trungbui011/data-warehouse-project/raw/main/images/star%20schema.png)
 
-1. gold.dim_customers
+## 1. gold.dim_customers
 - Purpose: Stores customer details enriched with demographic and geographic data
-- Columns:
 
 | Column name | Data Type | Description |
 |:---:|:---:|:---|
@@ -21,9 +20,8 @@ Star Schema của tầng Gold:
 |birthdate| DATE | The date of birth of the customer, formatted as yyyy-mm-dd (1982-03-25)|
 |create_date| DATE | The date of customer record was created in the system, formatted as yyyy-mm-dd (2026-05-20)|
 
-2. gold.dim_products
+## 2. gold.dim_products
 - Purpose: Provides information about the products and their attributes
-- Columns:
 
 | Column name | Data Type | Description |
 |:---:|:---:|:---|
@@ -39,9 +37,8 @@ Star Schema của tầng Gold:
 |product_line| VARCHAR(20) | The specific product line ('Mountain', 'Road', 'Touring', 'other Sales', 'n/a')|
 |start_date| DATE |The date when products are available for sales|
 
-3. gold.fact_sales
+## 3. gold.fact_sales
 - Purpose: Stores transactional sales data for analytical purposes
-- Columns:
 
 | Column name | Data Type | Description |
 |:---:|:---:|:---|
