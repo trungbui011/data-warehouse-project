@@ -1,16 +1,20 @@
 /*
-Stored Procedure: Load Silver Layer (Import Data from Bronze to Silver)
-- This stored procedure truncate all data from every single table in Silver Layer before loading, transforming and cleansing data from Bronze layer into the Silver schema
-- Run 'EXEC silver.load_silver' will run the script below automatically.
+The data processing workflow for the Silver layer is as follows:
+- Stored Procedure Execution: The system runs proc_load_silver to transform, clean and load data from the Bronze layer into the Silver layer.
+- Data Cleansing & Standardization: It standardizes data types (dates, decimals...), trims redundant whitespaces, handles NULL values...
+- Incremental Loading (Upsert/Merge): Using a MERGE strategy, new records are seamlessly inserted, and existing records with changes are updated based on primary keys.
+- As this is a test project with a small data volume, @is_full_load = 1 is chosen to TRUNCATE each table. This strategy requires careful evaluation in large-scale environments.
 
-- Stored Produce: sẽ xóa toàn bộ dữ liệu trước đó trong từng bảng của tầng Silver trước khi load dữ liệu của các bảng ở tầng Bronze vào tầng Silver
-- Script này sẽ có nhiệm vụ xóa hết dữ liệu trước đó của các bảng ở tầng Silver nhưng vẫn giữ lại cấu trúc các bảng; sau đó load, transform và làm sạch dữ liệu của tầng Bronze trước khi load data vào tầng Silver
-- Câu lệnh EXEC silver.load_silver dùng để load tự động script bên dưới.
+Quy trình xử lý data của tầng Silver như sau:
+- Chạy Stored Procedure: làm sạch và nạp dữ liệu từ tầng Bronze sang tầng Silver.
+- Làm sạch & Chuẩn hóa: Chuẩn hóa kiểu dữ liệu (ngày tháng, số thập phân), bỏ khoảng trắng (TRIM) và xử lý giá trị rỗng (NULL)...
+- Nạp dữ liệu lũy tiến (Upsert/Merge): Áp dụng cơ chế MERGE để chèn mới các dòng dữ liệu chưa tồn tại và cập nhật các dòng dữ liệu có sự thay đổi dựa trên khóa chính.
+- Do đây là dự án thử nghiệm, data còn ít nên mình chọn @is_full_load = 1 để TRUNCATE từng bảng, với những hệ thống dữ liệu lớn cần cân nhắc. 
 */
 EXEC silver.load_silver
 
 CREATE OR ALTER PROCEDURE silver.load_silver
-    @is_full_load BIT = 0 -- Bật 1 nếu muốn TRUNCATE và nạp lại toàn bộ; Để mặc định 0 để chạy lũy tiến (Incremental MERGE)
+    @is_full_load BIT = 0 -- Chọn 1 nếu muốn TRUNCATE và nạp lại toàn bộ (cân nhắc); Chọn mặc định 0 để chạy lũy tiến.
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -103,7 +107,7 @@ BEGIN
         )
         MERGE silver.crm_prd_info AS TARGET
         USING Src_crm_prd_info AS SOURCE
-        ON TARGET.prd_id = SOURCE.prd_id -- So khớp theo khóa prd_id duy nhất
+        ON TARGET.prd_id = SOURCE.prd_id
         WHEN MATCHED THEN
             UPDATE SET 
                 TARGET.prd_key = SOURCE.prd_key,
@@ -153,7 +157,7 @@ BEGIN
         USING Src_crm_sales_details AS SOURCE
         ON TARGET.sls_ord_num = SOURCE.sls_ord_num 
            AND TARGET.sls_prd_key = SOURCE.sls_prd_key 
-           AND TARGET.sls_cust_id = SOURCE.sls_cust_id -- So khớp theo bộ khóa tự nhiên của giao dịch
+           AND TARGET.sls_cust_id = SOURCE.sls_cust_id
         WHEN MATCHED THEN
             UPDATE SET 
                 TARGET.sls_order_dt = SOURCE.sls_order_dt,
@@ -286,7 +290,6 @@ BEGIN
         PRINT'ERROR NUMBER: '  + CAST(ERROR_NUMBER() AS NVARCHAR)
         PRINT'ERROR STATE: '   + CAST(ERROR_STATE() AS NVARCHAR)
         PRINT'=================================================================='
-        -- Thêm dòng THROW để hệ thống quản lý Data Pipeline (như ADF/Airflow) có thể bắt được lỗi và cảnh báo
         ;THROW; 
     END CATCH
 END;
