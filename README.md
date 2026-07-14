@@ -56,6 +56,7 @@
 ![Schema](https://github.com/trungbui011/data-warehouse-project/blob/main/images/Schemas.png)
 
 ## 4. Triển khai dự án (Project Implementation)
+&nbsp;&nbsp;&nbsp;Bước đầu tiên là bước cực kỳ quan trọng, đó là [khởi tạo Database](https://github.com/trungbui011/data-warehouse-project/blob/main/scripts/init_database.sql)
 ### 4.1 Chuẩn bị Data
 &nbsp;&nbsp;&nbsp;Dữ liệu thô ban đầu thuộc 2 nguồn giả định CRM và ERP được lưu trong folder [datasets](https://github.com/trungbui011/data-warehouse-project/tree/main/datasets) dưới dạng các file csv.
 ### 4.2 Thiết lập cấu trúc bảng
