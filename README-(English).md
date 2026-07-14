@@ -1,4 +1,4 @@
-# DATA WAREHOUSE DEVELOPMENT PROJECT
+# DATA WAREHOUSE BUILDING PROJECT
 
 ## TABLE OF CONTENTS
 &nbsp;&nbsp;&nbsp;[1. Introduction](#1-introduction)
